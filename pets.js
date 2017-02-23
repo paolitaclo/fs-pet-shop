@@ -5,6 +5,20 @@ let fs = require('fs');
 let cmd = process.argv[2];
 let index = process.argv[3];
 
+if (cmd === 'read') {
+  readPet();
+} else if (cmd === 'create') {
+  createPet();
+} else if (cmd === 'update') {
+  updatePet();
+} else if (cmd === 'destroy') {
+  destroyPet();
+}
+else {
+  console.error('Usage: node pets.js [read | create | update | destroy]');
+  process.exit(1);
+}
+
 function readPet() {
   fs.readFile('./pets.json', function (err, data) {
     if (err) {
@@ -22,9 +36,7 @@ function readPet() {
   });
 }
 
-if (cmd === 'read') {
-  readPet();
-} else if (cmd === 'create') {
+function createPet() {
   fs.readFile('./pets.json', function (err, data) {
     if (err) {
       throw err;
@@ -47,7 +59,9 @@ if (cmd === 'read') {
       console.log(pet);
     });
   });
-} else if (cmd === 'update') {
+}
+
+function updatePet() {
   fs.readFile('./pets.json', function (err, data) {
     if (err) {
       throw err;
@@ -70,7 +84,26 @@ if (cmd === 'read') {
     })
   });
 }
-else {
-  console.error('Usage: node pets.js [read | create | update | destroy]');
-  process.exit(1);
+
+function destroyPet () {
+  fs.readFile('./pets.json', function (err, data) {
+    if (err) {
+      throw err;
+    }
+    else if (!process.argv[3]) {
+      console.error('Usage: node pets.js destroy INDEX');
+      process.exit(1);
+    }
+    let pets = JSON.parse(data);
+    let petTODestroy = pets[index];
+    console.log(petTODestroy);
+    let petDestroyed = pets.splice(index, 1);
+    let petsJSON = JSON.stringify(pets);
+
+    fs.writeFile('./pets.json', petsJSON, function (writeError) {
+      if (writeError) {
+        throw writeError;
+      }
+    });
+  });
 }
