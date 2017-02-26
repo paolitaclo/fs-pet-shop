@@ -18,7 +18,8 @@ app.route('/pets')
     fs.readFile('./pets.json', function (err, petsJSON){
       if (err) {
         console.error(err.stack);
-        return res.sendStatus(500);
+        res.sendStatus(500);
+        return;
       }
       let pets = JSON.parse(petsJSON);
       res.send(pets);
@@ -28,7 +29,8 @@ app.route('/pets')
     fs.readFile('./pets.json', function (err, petsJSON){
       if (err) {
         console.error(err.stack);
-        return res.sendStatus(500);
+        res.sendStatus(500);
+        return;
       }
       let pets = JSON.parse(petsJSON);
       let namePet = req.body.name;
@@ -38,32 +40,37 @@ app.route('/pets')
 
       if (namePet.length === 0 || agePet.length === 0 || kindPet.length === 0 ) {
         res.set('Content-Type', 'text/plain');
-        return res.sendStatus(400);
+        res.sendStatus(400);
+        return;
       }
       let petsUpdatedJSON = JSON.stringify(pets);
       fs.writeFile('./pets.json', petsUpdatedJSON, function (writeErr) {
         if (writeErr) {
           console.error(writeErr.stack);
-          return res.sendStatus(500);
+          res.sendStatus(500);
+          return;
         }
         res.send(req.body);
       });
     });
   });
 
+
 app.get('/pets/:id', function (req, res) {
   res.header("Content-Type", "application/json");
   fs.readFile('./pets.json', function (err, petsJSON){
     if (err) {
       console.error(err.stack);
-      return res.sendStatus(500);
+      res.sendStatus(500);
+      return;
     }
     let id = Number.parseInt(req.params.id);
     let pets = JSON.parse(petsJSON);
 
     if (id < 0 || id >= pets.length || Number.isNaN(id)) {
       res.set('Content-Type', 'text/plain')
-      return res.sendStatus(404);
+      res.sendStatus(404);
+      return;
     }
     res.header("Content-Type", "application/json");
     res.send(pets[id]);
@@ -72,10 +79,6 @@ app.get('/pets/:id', function (req, res) {
 
 app.get('*', function(req, res){
   res.sendStatus(404);
-});
-
-app.use(function (req, res) {
-  res.sendStatus(200);
 });
 
 app.listen(port, function () {

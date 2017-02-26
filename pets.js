@@ -67,7 +67,7 @@ function updatePet() {
       throw err;
     }
     else if (!process.argv[3] || !process.argv[4] || !process.argv[5] || !process.argv[6]) {
-      console.error('Usage: node pets.js update INDEX AGE KIND NAME');
+      console.error('Usage: node pets.js update INreqDEX AGE KIND NAME');
       process.exit(1);
     }
     let pets = JSON.parse(data);
