@@ -11,9 +11,9 @@ app.use(morgan('short'));
 app.use(bodyParser.json());
 
 app.route('/pets')
-  .get(function (req, res) {
+  .get((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -23,9 +23,9 @@ app.route('/pets')
       res.send(pets);
     });
   })
-  .post(function (req, res) {
+  .post((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -43,7 +43,7 @@ app.route('/pets')
         return;
       }
       let petsUpdatedJSON = JSON.stringify(pets);
-      fs.writeFile('./pets.json', petsUpdatedJSON, function (writeErr) {
+      fs.writeFile('./pets.json', petsUpdatedJSON, writeErr => {
         if (writeErr) {
           console.error(writeErr.stack);
           return res.sendStatus(500);
@@ -55,9 +55,9 @@ app.route('/pets')
 
 
 app.route('/pets/:id')
-  .get(function (req, res) {
+  .get((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -74,9 +74,9 @@ app.route('/pets/:id')
       res.send(pets[id]);
     });
   })
-  .patch(function (req, res) {
+  .patch((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -104,7 +104,7 @@ app.route('/pets/:id')
         return;
       }
 
-      fs.writeFile('./pets.json', petsPatchJSON, function (writeErr) {
+      fs.writeFile('./pets.json', petsPatchJSON, writeErr => {
         if (writeErr) {
           console.error(writeErr.stack);
           res.sendStatus(500);
@@ -114,9 +114,9 @@ app.route('/pets/:id')
       });
     });
   })
-  .delete(function (req, res) {
+  .delete((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -134,7 +134,7 @@ app.route('/pets/:id')
       let petsDeleteJSON = JSON.stringify(pets);
 
 
-      fs.writeFile('./pets.json', petsDeleteJSON, function (writeErr) {
+      fs.writeFile('./pets.json', petsDeleteJSON, writeErr => {
         if (writeErr) {
           console.error(writeErr.stack);
           res.sendStatus(500);
@@ -145,11 +145,11 @@ app.route('/pets/:id')
     });
   });
 
-app.get('*', function(req, res) {
+app.get('*', (req, res) => {
   res.sendStatus(404);
 });
 
-app.listen(port, function () {
+app.listen(port, () => {
   console.log('Listening on port ', port);
 });
 

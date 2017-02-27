@@ -1,21 +1,20 @@
 'use stric';
 
-let fs = require('fs');
-let express = require('express');
-let app = express();
-let port = process.env.PORT || 8000;
-let morgan = require('morgan');
-let bodyParser = require('body-parser');
-
+const fs = require('fs');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8000;
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 app.use(morgan('short'));
 app.use(bodyParser.json());
 app.disable('x-powered-by');
 
 app.route('/pets')
-  .get(function (req, res) {
+  .get((req, res) => {
     res.header("Content-Type", "application/json");
-    fs.readFile('./pets.json', function (err, petsJSON){
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -25,8 +24,8 @@ app.route('/pets')
       res.send(pets);
     });
   })
-  .post(function (req, res) {
-    fs.readFile('./pets.json', function (err, petsJSON){
+  .post((req, res) => {
+    fs.readFile('./pets.json', (err, petsJSON) => {
       if (err) {
         console.error(err.stack);
         res.sendStatus(500);
@@ -44,7 +43,7 @@ app.route('/pets')
         return;
       }
       let petsUpdatedJSON = JSON.stringify(pets);
-      fs.writeFile('./pets.json', petsUpdatedJSON, function (writeErr) {
+      fs.writeFile('./pets.json', petsUpdatedJSON, writeErr => {
         if (writeErr) {
           console.error(writeErr.stack);
           res.sendStatus(500);
@@ -56,9 +55,9 @@ app.route('/pets')
   });
 
 
-app.get('/pets/:id', function (req, res) {
+app.get('/pets/:id', (req, res) => {
   res.header("Content-Type", "application/json");
-  fs.readFile('./pets.json', function (err, petsJSON){
+  fs.readFile('./pets.json', (err, petsJSON) => {
     if (err) {
       console.error(err.stack);
       res.sendStatus(500);
@@ -77,11 +76,11 @@ app.get('/pets/:id', function (req, res) {
   });
 });
 
-app.get('*', function(req, res){
+app.get('*', (req, res) => {
   res.sendStatus(404);
 });
 
-app.listen(port, function () {
+app.listen(port, () => {
   console.log('Listening on port ', port);
 });
 
